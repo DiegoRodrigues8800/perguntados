@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:perguntados/questao.dart';
+import 'package:perguntados/questionario.dart';
+import 'package:perguntados/resultado.dart';
 
 void main() => runApp(const PerguntadosApp());
 
@@ -11,8 +12,8 @@ class PerguntadosApp extends StatefulWidget {
 }
 
 class _PerguntadosAppState extends State<PerguntadosApp> {
-  final _perguntaSelecionada = 0;
-  final _pontuacaoTotal = 0;
+  var _perguntaSelecionada = 0;
+  var _pontuacaoTotal = 0;
 
   final _perguntas = const [
     {
@@ -50,15 +51,24 @@ class _PerguntadosAppState extends State<PerguntadosApp> {
 
   var perguntaSelecionada = 0;
 
-  void responder() {
+  void _responder(int pontuacao) {
+    if (temPerguntaSelecionada) {
+      setState(() {
+        _perguntaSelecionada++;
+        _pontuacaoTotal += pontuacao;
+      });
+    }
+  }
+
+  bool get temPerguntaSelecionada {
+    return _perguntaSelecionada < _perguntas.length;
+  }
+
+  void _reiniciarQuestionario() {
     setState(() {
-      if (perguntaSelecionada >= perguntas.length - 1) {
-        perguntaSelecionada = 0;
-      } else {
-        perguntaSelecionada++;
-      }
+      _perguntaSelecionada = 0;
+      _pontuacaoTotal = 0;
     });
-    print(perguntaSelecionada);
   }
 
   @override
@@ -68,54 +78,16 @@ class _PerguntadosAppState extends State<PerguntadosApp> {
         appBar: AppBar(
           title: const Text("Perguntados"),
         ),
-        body: Column(
-          children: [
-            // PERGUNTA
-            Questao(
-                perguntas: perguntas, perguntaSelecionada: perguntaSelecionada),
-            //RESPOSTA 1
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                ),
-                onPressed: responder,
-                child: const Text("Pergunta 1"),
+        body: temPerguntaSelecionada
+            ? Questionario(
+                perguntas: _perguntas,
+                perguntSelecionada: _perguntaSelecionada,
+                quandoResponder: _responder,
+              )
+            : Resultado(
+                _pontuacaoTotal,
+                _reiniciarQuestionario,
               ),
-            ),
-            //RESPOSTA 2
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                ),
-                onPressed: () {
-                  print("Resposta 2");
-                },
-                child: const Text("Pergunta 2"),
-              ),
-            ),
-            //RESPOSTA 3
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                ),
-                onPressed: () => print("Resposta 3"),
-                child: const Text("Pergunta 3"),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

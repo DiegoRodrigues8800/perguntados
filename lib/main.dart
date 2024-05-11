@@ -34,7 +34,7 @@ class _PerguntadosAppState extends State<PerguntadosApp> {
       ],
     },
     {
-      "texto": "O Palmeiras de mundial?",
+      "texto": "O Palmeiras tem mundial?",
       "respostas": [
         {"texto": "Sim", "pontuacao": 1},
         {"texto": "Não", "pontuacao": 10},

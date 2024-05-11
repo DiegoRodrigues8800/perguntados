@@ -8,11 +8,11 @@ class Resultado extends StatelessWidget {
       {super.key});
 
   String get fraseResultado {
-    if (pontuacao < 8) {
+    if (pontuacao < 20) {
       return "Ferro";
-    } else if (pontuacao < 12) {
+    } else if (pontuacao < 25) {
       return "Platina";
-    } else if (pontuacao < 16) {
+    } else if (pontuacao < 30) {
       return "Immortal";
     } else {
       return "Radiante";
@@ -29,6 +29,15 @@ class Resultado extends StatelessWidget {
             fraseResultado,
             style: const TextStyle(
               fontSize: 28,
+            ),
+          ),
+        ),
+        Center(
+          child: Text(
+            "Pontuação: $pontuacao Pontos!",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
